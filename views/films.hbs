@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A page with available films with basic information. The page also has an option to to search for films by either their name or genre."
+    />
+
+    <title>Films</title>
+
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4">Films</h1>
+
+      <!-- Пошуковий скрол-бар -->
+      <form action="/films" method="get" class="form-inline mb-4">
+        <input
+          type="text"
+          name="title"
+          class="form-control mr-sm-2"
+          placeholder="Search by title"
+        />
+        <select name="genre" class="form-control mr-sm-2">
+          <option value="">Select genre</option>
+          {{#each genres}}
+          <option value="{{this}}">{{this}}</option>
+          {{/each}}
+        </select>
+        <button type="submit" class="btn btn-primary mr-2">Search</button>
+        <a href="/films" class="btn btn-secondary">Refresh</a>
+      </form>
+
+      {{#if films.length}}
+      <div class="row">
+        {{#each films}}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img
+              src="https://image.tmdb.org/t/p/w500{{this.posterPath}}"
+              class="card-img-top"
+              alt="Poster"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{this.title}}</h5>
+              <p class="card-text">
+                <strong>Genre:</strong>
+                {{this.genre}}
+              </p>
+              <p class="card-text">
+                <strong>Release Year:</strong>
+                {{this.releaseYear}}
+              </p>
+              <p class="card-text">
+                <strong>Average Rating:</strong>
+                {{this.averageRating}}
+              </p>
+              <a href="/films/{{this.id}}" class="btn btn-primary">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      {{else}}
+      <p>No films found.</p>
+      {{/if}}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

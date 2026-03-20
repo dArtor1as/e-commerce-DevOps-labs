@@ -1,0 +1,30 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "semi": true,
+  "tabWidth": 2,
+  "htmlWhitespaceSensitivity": "css",
+  "embeddedLanguageFormatting": "off",
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "flow"
+      }
+    },
+    {
+        "files": "*.css",
+        "options":{
+          "parser": "css"
+        }
+    },
+    {
+        "files": "*.hbs",
+        "options":{
+          "parser": "html"
+        }
+    }
+  ]
+}
+

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reviews</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A page with all reviews to films that exists on the site. This page also provides an oportuinity to read other users comments and write yourself one"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4">Latest Reviews</h1>
+      {{#if reviews.length}}
+      <ul class="list-group">
+        {{#each reviews}}
+        <li class="list-group-item">
+          <div class="media">
+            <img
+              src="https://image.tmdb.org/t/p/w500{{this.movie.posterPath}}"
+              class="mr-3"
+              alt="Poster"
+              style="width: 100px;"
+            />
+            <div class="media-body">
+              <h5 class="mt-0">{{this.movie.title}}</h5>
+              <p>{{this.content}}</p>
+              <p>
+                <strong>Reviewed by:</strong>
+                <span class="review-author" data-author="{{this.user.username}}"
+                  >{{this.user.username}}</span
+                >
+              </p>
+              <p>
+                <strong>Date:</strong>
+                {{formatDate this.createdAt}}
+              </p>
+              <button
+                class="btn btn-sm btn-danger delete-review-btn d-none"
+                data-review-id="{{this.id}}"
+              >
+                Видалити рецензію
+              </button>
+
+              <!-- Comments Section -->
+              <div class="mt-4">
+                <h6>Comments:</h6>
+                {{#if this.comments.length}}
+                <ul class="list-group">
+                  {{#each this.comments}}
+                  <li class="list-group-item">
+                    <p>{{this.content}}</p>
+                    <p>
+                      <strong>By:</strong>
+                      <span
+                        class="comment-author"
+                        data-author="{{this.user.username}}"
+                        >{{this.user.username}}</span
+                      >
+                      |
+                      <strong>Date:</strong>
+                      {{formatDate this.createdAt}}
+                    </p>
+                    <button
+                      class="btn btn-sm btn-danger delete-comment-btn d-none"
+                      data-comment-id="{{this.id}}"
+                    >
+                      Видалити коментар
+                    </button>
+                  </li>
+                  {{/each}}
+                </ul>
+                {{else}}
+                <p>No comments yet.</p>
+                {{/if}}
+              </div>
+
+              <!-- Add Comment Form -->
+              <form id="comment-form-{{this.id}}" class="mt-3 comment-form">
+                <div class="form-group">
+                  <label for="content-{{this.id}}">Add a Comment:</label>
+                  <textarea
+                    class="form-control"
+                    id="content-{{this.id}}"
+                    name="content"
+                    required
+                  ></textarea>
+                </div>
+                <input type="hidden" name="reviewId" value="{{this.id}}" />
+                <button type="submit" class="btn btn-success">Submit</button>
+              </form>
+            </div>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+      {{else}}
+      <p>No reviews found.</p>
+      {{/if}}
+    </div>
+    <script src="/js/reviews.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

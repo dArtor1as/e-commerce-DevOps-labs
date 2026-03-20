@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Main page of the website mostly used to navigate to other pages."
+    />
+    <title>My Cinema</title>
+    <!-- Including Bootstrap CSS for styling -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body class="bg-light">
+    <div class="container text-center mt-4">
+      <!-- Welcome Title -->
+      <h1 class="main-title">Ласкаво просимо до My Cinema!</h1>
+      <p class="main-subtitle">
+        Переглядайте фільми, читайте рецензії та насолоджуйтесь!
+      </p>
+
+      <!-- Cards Section -->
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body text-center">
+              <h5 class="card-title">Перегляньте наші фільми</h5>
+              <p class="card-text">
+                Дізнайтеся більше про улюблені жанри та нові фільми.
+              </p>
+              <a href="/films" class="btn btn-primary">Перейти до фільмів</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body text-center">
+              <h5 class="card-title">Читайте рецензії</h5>
+              <p class="card-text">
+                Ознайомтеся з відгуками інших глядачів про фільми.
+              </p>
+              <a href="/reviews" class="btn btn-primary">Перейти до рецензій</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Including Bootstrap JS for interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

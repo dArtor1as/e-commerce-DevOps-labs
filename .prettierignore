@@ -1,0 +1,3 @@
+package.json
+# Ігноруємо файли конфігурації
+.prettierrc

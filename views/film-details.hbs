@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Detailed information about films, including an ability to write a review or rate films."
+    />
+    <title>Film Details</title>
+    <link
+      href="https://stackpath.amazonaws.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/film-detail.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4">{{film.title}}</h1>
+      <a href="/films" class="btn btn-secondary mb-4">Back to Films List</a>
+      <div class="row">
+        <div class="col-md-4">
+          <img
+            src="https://image.tmdb.org/t/p/w500{{film.posterPath}}"
+            class="img-fluid"
+            alt="Poster"
+          />
+          <h5 class="mt-4">Rate this Film:</h5>
+          <form id="rate-film-form">
+            <input type="hidden" name="movieId" value="{{film.id}}" />
+            <div class="star-rating">
+              {{#range 10 1}}
+              <input
+                id="rateStar{{this}}"
+                name="value"
+                type="radio"
+                value="{{this}}"
+              />
+              <label for="rateStar{{this}}" title="{{this}} stars">
+                <i class="fas fa-star"></i>
+              </label>
+              {{/range}}
+            </div>
+            <button type="submit" class="btn btn-success">Submit Rating</button>
+          </form>
+        </div>
+        <div class="col-md-8">
+          <p>
+            <strong>Genre:</strong>
+            {{film.genre}}
+          </p>
+          <p>
+            <strong>Release Year:</strong>
+            {{film.releaseYear}}
+          </p>
+          <p>
+            <strong>Average Rating:</strong>
+            <span class="rating-value">
+              {{film.averageRating}}
+              <i class="fas fa-star"></i>
+            </span>
+          </p>
+          <p>
+            <strong>User Rating:</strong>
+            <span class="rating-value">
+              {{film.userRating}}
+              <i class="fas fa-star"></i>
+            </span>
+          </p>
+          <h5>Leave a Review:</h5>
+          <form id="create-review-form">
+            <input type="hidden" name="movieId" value="{{film.id}}" />
+            <div class="form-group">
+              <label for="content">Review:</label>
+              <textarea
+                class="form-control"
+                id="content"
+                name="content"
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="/js/create-review-rating.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

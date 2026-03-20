@@ -1,0 +1,25 @@
+.star-rating {
+  direction: rtl; /* Залишаємо для правильного напрямку */
+  display: inline-flex; /* Використовуйте inline-flex замість inline-block */
+  align-items: center; /* Вирівнюємо зірки вертикально */
+  padding: 0; /* Усуваємо зайві відступи */
+  margin: 0; /* Усуваємо зайві відступи */
+}
+.star-rating input[type='radio'] {
+  display: none;
+}
+.star-rating label {
+  color: #ccc;
+  font-size: 20px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.star-rating input[type='radio']:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: #f2b600;
+}
+.rating-value i {
+  color: #f2b600;
+}

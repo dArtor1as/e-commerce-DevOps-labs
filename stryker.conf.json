@@ -1,0 +1,12 @@
+{
+  "mutate": ["src/**/*.ts", "!src/**/*.spec.ts"],
+  "testRunner": "jest",
+  "jest": {
+    "configFile": "./jest.config.json"
+  },
+  "coverageAnalysis": "perTest",
+  "reporters": ["clear-text", "progress", "html"],
+  "timeoutMS": 5000,
+  "checkers": ["typescript"],
+  "tsconfigFile": "tsconfig.json"
+}
