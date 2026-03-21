@@ -63,10 +63,10 @@ curl -i localhost:3000/health
 ```
 
 **БД підключена (200 OK):**<br>
-![Health Check OK - 200](images_for_reports\healtcheck_200.png)
+![Health Check OK - 200](images_for_reports/healtcheck_200.png)
 
 **БД зупинена вручну (503 Service Unavailable):**
-![Health Check Error - 503](images_for_reports\healthcheck_503.png)
+![Health Check Error - 503](images_for_reports/healthcheck_503.png)
 
 ---
 
@@ -90,7 +90,7 @@ curl -i localhost:3000/health
 {"timestamp":"2026-03-21T14:48:50.012Z","level":"INFO","message":"SIGTERM received. Starting graceful shutdown..."}
 ```
 
-![Graceful shutdown](images_for_reports\graceful_shutdown.png)
+![Graceful shutdown](images_for_reports/graceful_shutdown.png)
 
 ---
 
