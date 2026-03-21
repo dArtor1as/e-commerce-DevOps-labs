@@ -10,15 +10,16 @@ services:
     container_name: app
     restart: unless-stopped
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
+      - DB_HOST=${DB_HOST:-db}
+      - DB_PORT=${DB_PORT:-5432}
       - DB_NAME=${DB_NAME:-db}
       - DB_USER=${DB_USER:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-MyPassword05}
-      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?schema=public
-      - TMDB_API_KEY=${TMDB_API_KEY}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      # DATABASE_URL формуємо для прізми з інших змінних, щоб не дублювати інформацію
+      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-MyPassword05}@${DB_HOST:-db}:${DB_PORT:-5432}/${DB_NAME:-e_commerce_filmsdb}?schema=public
+      - TMDB_API_KEY=${TMDB_API_KEY:-dummy_key}
+      - JWT_SECRET=${JWT_SECRET:-dummy_secret_key_123}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-3600}
     depends_on:
       db:
         # App почне запуск ТІЛЬКИ коли healthcheck бази даних скаже "ready"
@@ -38,7 +39,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER}']
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME:-db}']
       interval: 5s
       timeout: 5s
       retries: 5
