@@ -18,7 +18,9 @@ import { ConfigModule } from '@nestjs/config';
 import { FavouritesModule } from './favourites/favourites.module';
 import { TokensService } from './tokens/tokens.service';
 import { AuthMiddleware } from './middleware/auth.middleware';
-import { JwtModule } from '@nestjs/jwt'; // Додайте імпорт JwtModule
+import { JwtModule } from '@nestjs/jwt';
+import { HealthModule } from './health/health.module';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
@@ -29,7 +31,7 @@ import { JwtModule } from '@nestjs/jwt'; // Додайте імпорт JwtModul
     RatingsModule,
     DatabaseModule,
     AuthModule,
-    JwtModule.register({}), // Додайте цей рядок
+    JwtModule.register({}),
     ConfigModule.forRoot({
       isGlobal: true,
       validate: (config) => {
@@ -43,6 +45,8 @@ import { JwtModule } from '@nestjs/jwt'; // Додайте імпорт JwtModul
       },
     }),
     FavouritesModule,
+    HealthModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService, TmdbService, TokensService],
@@ -55,6 +59,6 @@ export class AppModule implements NestModule {
         { path: 'reviews', method: RequestMethod.POST },
         { path: 'comments', method: RequestMethod.POST },
         { path: 'ratings', method: RequestMethod.POST },
-      ); // Замініть 'protected-route' на маршрути, які потрібно захистити
+      );
   }
 }

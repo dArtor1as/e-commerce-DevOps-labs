@@ -6,9 +6,12 @@ import { AppModule } from './app.module';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as hbs from 'hbs';
+import { JsonLoggerService } from './logger/json-logger.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: new JsonLoggerService(),
+  });
 
   // Реєстрація хелпера для форматування дати перед налаштуванням view engine
   hbs.registerHelper('formatDate', function (date) {
@@ -30,16 +33,19 @@ async function bootstrap() {
     return result;
   });
 
-  // Set the views directory
+  // Налаштовуємо директорію для шаблонів та статичних файлів
   app.setBaseViewsDir(join(process.cwd(), 'views'));
 
-  // Set Handlebars as the view engine
+  // Вмикаємо слухачі сигналів для Graceful Shutdown
+  app.enableShutdownHooks();
+
+  // Налаштовуємо Handlebars як view engine
   app.setViewEngine('hbs');
 
-  // Set the static assets directory
+  // Налаштовуємо директорію для статичних файлів
   app.useStaticAssets(join(process.cwd(), 'public'));
 
-  // Увімкнення глобальної валідації
+  // Глобально застосовуємо валідаційні пайпи для всіх маршрутів
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
