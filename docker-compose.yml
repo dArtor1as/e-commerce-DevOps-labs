@@ -16,7 +16,7 @@ services:
       - DB_USER=${DB_USER:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-MyPassword05}
       # DATABASE_URL формуємо для прізми з інших змінних, щоб не дублювати інформацію
-      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-MyPassword05}@${DB_HOST:-db}:${DB_PORT:-5432}/${DB_NAME:-e_commerce_filmsdb}?schema=public
+      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-MyPassword05}@${DB_HOST:-db}:${DB_PORT:-5432}/${DB_NAME:-db}?schema=public
       - TMDB_API_KEY=${TMDB_API_KEY:-dummy_key}
       - JWT_SECRET=${JWT_SECRET:-dummy_secret_key_123}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-3600}
@@ -39,7 +39,8 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME:-db}']
+      test:
+        ['CMD-SHELL', 'pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-db}']
       interval: 5s
       timeout: 5s
       retries: 5
