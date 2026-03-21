@@ -61,14 +61,6 @@ async function main() {
   const tmdbBaseUrl = 'https://image.tmdb.org/t/p/w500';
   const moviesData = [
     {
-      tmdbId: 157336,
-      title: 'Interstellar',
-      posterPath: `${tmdbBaseUrl}/gEU2QniL6E77AAyXcCXr47FaOiy.jpg`,
-      genre: ['Adventure', 'Drama', 'Science Fiction'],
-      releaseYear: 2014,
-      averageRating: 8.6,
-    },
-    {
       tmdbId: 27205,
       title: 'Inception',
       posterPath: `${tmdbBaseUrl}/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg`,
@@ -109,12 +101,12 @@ async function main() {
       averageRating: 7.9,
     },
     {
-      tmdbId: 680,
-      title: 'Pulp Fiction',
-      posterPath: `${tmdbBaseUrl}/d5iIlFn5s0ImszYzBPbOYKQcbJ5.jpg`,
-      genre: ['Thriller', 'Crime'],
-      releaseYear: 1994,
-      averageRating: 8.9,
+      tmdbId: 769,
+      title: 'Goodfellas',
+      posterPath: `${tmdbBaseUrl}/aKuFiU82s5ISJpGZp7YkIr3kCUd.jpg`,
+      genre: ['Drama', 'Crime'],
+      releaseYear: 1990,
+      averageRating: 8.5,
     },
     {
       tmdbId: 120,
@@ -158,11 +150,12 @@ async function main() {
   const critic = createdUsers[1];
   const john = createdUsers[2];
 
-  const interstellar = createdMovies.find((m) => m.title === 'Interstellar')!;
+  // Змінили Interstellar на Inception, щоб не ламалася логіка відгуків
+  const inception = createdMovies.find((m) => m.title === 'Inception')!;
   const matrix = createdMovies.find((m) => m.title === 'The Matrix')!;
   const dune = createdMovies.find((m) => m.title === 'Dune')!;
 
-  // Рецензія на Інтерстеллар (upsert гарантує відсутність дублів)
+  // Рецензія на Inception (upsert гарантує відсутність дублів)
   const review1 = await prisma.review.upsert({
     where: { id: 1 },
     update: {},
@@ -170,7 +163,7 @@ async function main() {
       content:
         'Це просто шедевр! Музика Ганса Циммера неймовірна, а візуальні ефекти випереджають час.',
       userId: admin.id,
-      movieId: interstellar.id,
+      movieId: inception.id,
     },
   });
 
@@ -215,8 +208,8 @@ async function main() {
   if (ratingsCount === 0) {
     await prisma.rating.createMany({
       data: [
-        { value: 10, userId: admin.id, movieId: interstellar.id },
-        { value: 9, userId: critic.id, movieId: interstellar.id },
+        { value: 10, userId: admin.id, movieId: inception.id },
+        { value: 9, userId: critic.id, movieId: inception.id },
         { value: 10, userId: critic.id, movieId: matrix.id },
         { value: 8, userId: john.id, movieId: dune.id },
       ],
@@ -228,7 +221,7 @@ async function main() {
   if (favoritesCount === 0) {
     await prisma.favorite.createMany({
       data: [
-        { userId: admin.id, movieId: interstellar.id },
+        { userId: admin.id, movieId: inception.id },
         { userId: admin.id, movieId: matrix.id },
         { userId: john.id, movieId: dune.id },
       ],

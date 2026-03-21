@@ -1,169 +1,139 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank">
-    <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" />
-  </a>
-</p>
-
-<p align="center">
-  A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.
-</p>
-
-<p align="center">
-  <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-  <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-  <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-  <a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-  <a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-</p>
-
-# FilmsApp (NestJS)
-
-Веб-застосунок для пошуку, перегляду інформації та оцінки фільмів. Проєкт реалізовано з використанням архітектури на базі NestJS, реляційної бази даних PostgreSQL та ORM Prisma.
-
-Як шаблонний рушій для відображення інтерфейсу використовується Handlebars (HBS).
-
----
-
-## Функціонал
-
-- **Каталог фільмів:** Перегляд списку, детальна інформація, пошук та фільтрація за жанрами.
-- **Інтеграція з TMDB API:** Автоматичне отримання та збереження метаданих про фільми.
-- **Автентифікація:** Реєстрація та вхід користувачів з використанням JWT (JSON Web Tokens).
-- **Взаємодія:**
-  - Створення та редагування рецензій.
-  - Коментування рецензій.
-  - Система оцінювання фільмів.
-  - Список «Обране» для користувачів.
-
----
-
-## Технологічний стек
-
-- **Framework:** NestJS
-- **Мова програмування:** TypeScript
-- **База даних:** PostgreSQL
-- **ORM:** Prisma
-- **Template Engine:** Handlebars (hbs)
-- **Контейнеризація:** Docker, Docker Compose
-- **Тестування:** Jest, Supertest
-
----
+# E-commerce Films API
 
 # Налаштування
 
-## Встановлення та запуск (Docker)
+## (Змінні оточення)
 
-### 1. Налаштування змінних оточення
+Для успішного запуску застосунку необхідно створити файл `.env` у кореневій директорії проєкту. Нижче наведено список усіх необхідних змінних:
 
-Створіть файл `.env` у кореневій директорії проєкту:
+| Змінна           | Опис                                                                               | Обов'язкова | Приклад                 |
+| :--------------- | :--------------------------------------------------------------------------------- | :---------: | :---------------------- |
+| `DB_HOST`        | Хост бази даних (`postgres` для Docker-мережі, `localhost` для локального запуску) |     Так     | `postgres`              |
+| `DB_PORT`        | Порт для підключення до бази даних , на локалці наприклад 5433                     |     Так     | `5432`                  |
+| `DB_NAME`        | Назва бази даних PostgreSQL                                                        |     Так     | `e_commerce_filmsdb`    |
+| `DB_USER`        | Ім'я користувача бази даних                                                        |     Так     | `postgres`              |
+| `DB_PASSWORD`    | Пароль для підключення до бази даних                                               |     Так     | `MyPassword05`          |
+| `TMDB_API_KEY`   | Ключ доступу до зовнішнього API The Movie Database                                 |     Так     | `your-api-token`        |
+| `JWT_SECRET`     | Секретний ключ для підпису та верифікації JWT токенів                              |     Так     | `your-super-secret-key` |
+| `JWT_EXPIRES_IN` | Час життя JWT токена (у секундах)                                                  |     Так     | `3600`                  |
 
-```env
-# API Key від TheMovieDB (TMDB)
-TMDB_API_KEY=4b6edd71a6834daf5c966f231e3b0efb
+---
 
-# Налаштування JWT
-JWT_SECRET=your_super_secret_key1234sdaffasd_5sda2dzc
-JWT_EXPIRES_IN=3600
+### Запуск за допомогою контейнерів
 
-# Налаштування підключення до бази даних у Docker
-DATABASE_URL="postgresql://postgres:MyPassword05@postgres:5432/filmsdb?schema=public"
-```
-
-### 2. Запуск контейнерів
-
-Виконайте команду для збірки та запуску контейнерів:
-
-```
-docker-compose up --build
-```
-
-Ця команда виконає наступні дії:
-
-- Створить Docker-образи.
-
-- Запустить контейнер з базою даних PostgreSQL.
-
-- Запустить контейнер із застосунком NestJS.
-
-- Автоматично застосує міграції до бази даних.
-
-- Сервер буде доступний за адресою: http://localhost:3000
-
-### 3. Наповнення бази даних (Seeding)
-
-Для коректної роботи застосунку та наявності тестових даних (користувачі, фільми, рецензії) необхідно виконати скрипт наповнення.
-
-Відкрийте новий термінал та виконайте команду (при запущених контейнерах):
-
-```
-docker exec -it my-cinema-app-app-1 npx prisma db seed
-```
-
-Примітка: перевірте ім'я контейнера командою `docker ps`, якщо воно відрізняється від my-cinema-app-app-1.
-
-Дані для входу після наповнення:
-
-#### Email:
-
-```
-admin@example.com
-```
-
-#### Пароль:
-
-```
-123456
-```
-
-## Локальний запуск (без Docker)
-
-Якщо ви бажаєте запустити проєкт без контейнеризації, використовуючи локально встановлені Node.js та PostgreSQL.
-
-Встановіть залежності:
-
-```
+```bash
+# Встановлення залежностей
 npm install
-```
-
-Налаштуйте файл `.env` для вашої локальної бази даних :
 
 ```
-TMDB_API_KEY=4b6edd71a6834daf5c966f231e3b0efb
-JWT_SECRET=your_super_secret_key1234sdaffasd_5sda2dzc
-JWT_EXPIRES_IN=3600
 
-Локальне підключення (localhost, порт 5433)
-DATABASE_URL="postgresql://postgres:MyPassword05@localhost:5433/NestjsDB?sslmode=prefer&connect_timeout=10"
+### Запуск з беком локально
+
+```bash
+# Встановлення залежностей
+npm install
+# встановлення модуля прізми
+npx prisma generate
+# запуск бд
+docker-compose up -d postgres
+# виконання наявних міграцій
+npx prisma migrate deploy
+# заповнення стартовими даними бд
+npx prisma db seed
+# запуск у watch mode
+npm run start:dev
 ```
 
-#### Запустіть застосунок:
+### Запуск тестів
 
-```
-npm run start
-```
-
-## Тестування
-
-Проєкт містить Unit та E2E тести.
-
-#### запуск unit тестів
-
-```
-npm run test
+```bash
+npm test
 ```
 
-#### запуск e2e тестів
+---
 
+# Lab 0: Production-Ready Requirements
+
+## 1. Підтвердження Health Check
+
+Ендпоінт `GET /health` реалізує "глибоку" перевірку стану: він повертає статус `200 OK` лише за умови успішного виконання тестового запиту до бази даних. Якщо зв'язок з БД втрачено, застосунок повертає `503 Service Unavailable`.
+
+```bash
+curl -i localhost:3000/health
 ```
-npm run test:e2e
+
+**БД підключена (200 OK):**<br>
+![Health Check OK - 200](images_for_reports\healtcheck_200.png)
+
+**БД зупинена вручну (503 Service Unavailable):**
+![Health Check Error - 503](images_for_reports\healthcheck_503.png)
+
+---
+
+## 2. Приклад логів (JSON форматування)
+
+Приклад STDOUT логів під час ініціалізації контейнера:
+
+```json
+{"timestamp":"2026-03-21T12:36:50.366Z","level":"INFO","message":"Starting Nest application..."}
+{"timestamp":"2026-03-21T12:36:50.407Z","level":"INFO","message":"DatabaseModule dependencies initialized"}
+{"timestamp":"2026-03-21T12:36:50.410Z","level":"INFO","message":"AppModule dependencies initialized"}
+{"timestamp":"2026-03-21T12:36:50.432Z","level":"INFO","message":"Mapped {/comments, POST} route"}
+{"timestamp":"2026-03-21T12:36:50.529Z","level":"INFO","message":"Nest application successfully started"}
 ```
 
-#### перевірка покриття коду тестами
+---
 
+## 3. Graceful shutdown
+
+```json
+{"timestamp":"2026-03-21T14:48:50.012Z","level":"INFO","message":"SIGTERM received. Starting graceful shutdown..."}
 ```
-npm run test:cov
-```
 
-### Ліцензія
+![Graceful shutdown](images_for_reports\graceful_shutdown.png)
 
-Nest is MIT licensed.
+---
+
+## API Ендпоінти
+
+Нижче наведено перелік доступних REST API маршрутів застосунку. Деякі ендпоінти (наприклад, створення рецензій чи коментарів) захищені за допомогою JWT-авторизації.
+
+| Метод          | Ендпоінт                     | Опис                                              | Потребує Auth |
+| :------------- | :--------------------------- | :------------------------------------------------ | :-----------: |
+| **Health**     |                              |                                                   |               |
+| `GET`          | `/health`                    | Глибока перевірка стану системи (БД + Застосунок) |      Ні       |
+| **Auth**       |                              |                                                   |               |
+| `POST`         | `/auth/register`             | Реєстрація нового користувача                     |      Ні       |
+| `POST`         | `/auth/login`                | Авторизація користувача та отримання JWT токена   |      Ні       |
+| **Films**      |                              |                                                   |               |
+| `GET`          | `/films`                     | Отримання списку всіх фільмів                     |      Ні       |
+| `GET`          | `/films/:id`                 | Отримання детальної інформації про фільм за ID    |      Ні       |
+| `POST`         | `/films`                     | Додавання нового фільму                           |      Так      |
+| **Users**      |                              |                                                   |               |
+| `GET`          | `/users`                     | Отримання списку користувачів                     |      Так      |
+| `GET`          | `/users/:id`                 | Отримання профілю користувача за ID               |      Так      |
+| `POST`         | `/users`                     | Створення користувача                             |      Ні       |
+| `PATCH`        | `/users/:id`                 | Оновлення даних користувача                       |      Так      |
+| `DELETE`       | `/users/:id`                 | Видалення користувача                             |      Так      |
+| **Reviews**    |                              |                                                   |               |
+| `GET`          | `/reviews`                   | Отримання списку всіх рецензій                    |      Ні       |
+| `GET`          | `/reviews/:id`               | Отримання конкретної рецензії                     |      Ні       |
+| `POST`         | `/reviews`                   | Створення нової рецензії                          |      Так      |
+| `PATCH`        | `/reviews/:id`               | Оновлення власної рецензії                        |      Так      |
+| `DELETE`       | `/reviews/:id`               | Видалення власної рецензії                        |      Так      |
+| **Comments**   |                              |                                                   |               |
+| `GET`          | `/comments`                  | Отримання списку всіх коментарів                  |      Ні       |
+| `GET`          | `/comments/:id`              | Отримання конкретного коментаря                   |      Ні       |
+| `POST`         | `/comments`                  | Створення нового коментаря до рецензії            |      Так      |
+| `PATCH`        | `/comments/:id`              | Оновлення власного коментаря                      |      Так      |
+| `DELETE`       | `/comments/:id`              | Видалення власного коментаря                      |      Так      |
+| **Ratings**    |                              |                                                   |               |
+| `GET`          | `/ratings`                   | Отримання всіх оцінок                             |      Ні       |
+| `GET`          | `/ratings/movie/:movieId/me` | Отримання власної оцінки для конкретного фільму   |      Так      |
+| `POST`         | `/ratings`                   | Встановлення оцінки фільму                        |      Так      |
+| `PATCH`        | `/ratings/:id`               | Зміна встановленої оцінки                         |      Так      |
+| `DELETE`       | `/ratings/:id`               | Видалення своєї оцінки                            |      Так      |
+| **Favourites** |                              |                                                   |               |
+| `GET`          | `/favourites/:userId`        | Отримання списку улюблених фільмів користувача    |      Так      |
+| `POST`         | `/favourites`                | Додавання фільму до списку улюблених              |      Так      |
+| `DELETE`       | `/favourites/:id`            | Видалити фільм зі списку улюблених                |      Так      |
