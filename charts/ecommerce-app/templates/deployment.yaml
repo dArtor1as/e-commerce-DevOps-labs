@@ -3,8 +3,7 @@ kind: Deployment
 metadata:
   name: ecommerce-app
 spec:
-  # Змінна з values.yaml
-  replicas: { { .Values.replicaCount } }
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: ecommerce-app
@@ -15,15 +14,9 @@ spec:
     spec:
       containers:
         - name: app
-          # Змінні образу з values.yaml
-          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-          imagePullPolicy: { { .Values.image.pullPolicy } }
-          command:
-            [
-              'sh',
-              '-c',
-              'npx prisma migrate deploy && node prisma/seed.js && exec node dist/src/main.js',
-            ]
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["sh", "-c", "npx prisma migrate deploy && node prisma/seed.js && exec node dist/src/main.js"]
           ports:
             - containerPort: 3000
           envFrom:
@@ -43,5 +36,8 @@ spec:
               port: 3000
             initialDelaySeconds: 10
             periodSeconds: 5
-          # Змінні ресурсів з values.yaml
-          resources: { { - toYaml .Values.resources | nindent 12 } }
+          # Безпечний рендеринг ресурсів (не впаде, якщо змінних немає)
+          {{- if .Values.resources }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
