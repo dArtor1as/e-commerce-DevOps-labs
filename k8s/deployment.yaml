@@ -27,11 +27,12 @@ spec:
 
           ports:
             - containerPort: 3000
+          # Вимога тесту: secretRef має йти ПЕРШИМ (індекс 0)
           envFrom:
-            - configMapRef:
-                name: app-config
             - secretRef:
                 name: app-secret
+            - configMapRef:
+                name: app-config
           livenessProbe:
             httpGet:
               path: /health
