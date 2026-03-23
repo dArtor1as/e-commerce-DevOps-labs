@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-app
+spec:
+  replicas: 2 # Вимога: 2 репліки
+  selector:
+    matchLabels:
+      app: ecommerce-app
+  template:
+    metadata:
+      labels:
+        app: ecommerce-app
+    spec:
+      containers:
+        - name: app
+          # Замість <USERNAME> GitHub Actions автоматично підставить ваш логін
+          image: ghcr.io/<USERNAME>/ecommerce-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+
+          # Вимога: передача секретів через envFrom/secretRef
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: app-secret
+
+          # Вимога: livenessProbe та readinessProbe на /health
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
