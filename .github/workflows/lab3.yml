@@ -1,0 +1,39 @@
+name: Lab 3 Grading
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - 'lab**'
+  workflow_dispatch:
+
+jobs:
+  validate-k8s:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create k8s Kind Cluster
+        uses: helm/kind-action@v1.10.0
+
+      # Цей крок замінює <USERNAME> у deployment.yaml на ваш реальний логін у нижньому регістрі
+      - name: Prepare Image Name
+        run: |
+          OWNER_LC=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
+          sed -i "s/<USERNAME>/$OWNER_LC/g" k8s/deployment.yaml
+
+      - name: Apply Kubernetes Manifests
+        run: |
+          kubectl apply -f k8s/
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          echo "Waiting for DB to start so Health Checks don't fail..."
+          kubectl wait --for=condition=available --timeout=60s deployment/postgres
+
+      - name: Run Grading Script
+        run: |
+          chmod +x ./tests/lab3_test.sh
+          ./tests/lab3_test.sh

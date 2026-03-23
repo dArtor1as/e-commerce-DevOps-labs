@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ecommerce-app
+  template:
+    metadata:
+      labels:
+        app: ecommerce-app
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/<USERNAME>/ecommerce-app:latest
+          imagePullPolicy: Always
+
+          # Додаємо команду З DOCKER COMPOSE: міграції + сід + запуск
+          command:
+            [
+              'sh',
+              '-c',
+              'npx prisma migrate deploy && node prisma/seed.js && exec node dist/src/main.js',
+            ]
+
+          ports:
+            - containerPort: 3000
+          # Вимога тесту: secretRef має йти ПЕРШИМ (індекс 0)
+          envFrom:
+            - secretRef:
+                name: app-secret
+            - configMapRef:
+                name: app-config
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5

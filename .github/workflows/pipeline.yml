@@ -1,6 +1,8 @@
 name: Lab 2 Pipeline
 
-on: ['push', workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
 
 # Надаємо права GITHUB_TOKEN для публікації пакетів у GHCR
 permissions:
