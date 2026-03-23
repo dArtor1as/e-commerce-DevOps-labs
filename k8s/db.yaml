@@ -27,8 +27,20 @@ spec:
       containers:
         - name: postgres
           image: postgres:15-alpine
-          envFrom:
-            - configMapRef:
-                name: app-config
-            - secretRef:
-                name: app-secret
+          # Явно мапимо наші змінні на ті, які розуміє образ PostgreSQL
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_NAME
