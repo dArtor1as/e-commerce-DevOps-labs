@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-app
+spec:
+  # Змінна з values.yaml
+  replicas: { { .Values.replicaCount } }
+  selector:
+    matchLabels:
+      app: ecommerce-app
+  template:
+    metadata:
+      labels:
+        app: ecommerce-app
+    spec:
+      containers:
+        - name: app
+          # Змінні образу з values.yaml
+          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          imagePullPolicy: { { .Values.image.pullPolicy } }
+          command:
+            [
+              'sh',
+              '-c',
+              'npx prisma migrate deploy && node prisma/seed.js && exec node dist/src/main.js',
+            ]
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: app-secret
+            - configMapRef:
+                name: app-config
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          # Змінні ресурсів з values.yaml
+          resources: { { - toYaml .Values.resources | nindent 12 } }

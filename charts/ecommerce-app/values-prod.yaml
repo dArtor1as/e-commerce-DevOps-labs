@@ -1,0 +1,14 @@
+replicaCount: 3
+
+image:
+  repository: ghcr.io/dartor1as/ecommerce-app
+  pullPolicy: Always
+  tag: 'latest'
+
+resources:
+  requests:
+    cpu: '100m'
+    memory: '128Mi'
+  limits:
+    cpu: '250m'
+    memory: '256Mi'

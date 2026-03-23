@@ -1,0 +1,21 @@
+name: Lab 4 Grading
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  validate-helm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Helm вже встановлений на ubuntu-latest, тому просто перевіряємо версію
+      - name: Verify Helm installation
+        run: helm version
+
+      - name: Run Grading Script
+        run: |
+          chmod +x ./tests/lab4_test.sh
+          ./tests/lab4_test.sh
